@@ -5,10 +5,20 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import json
+import zipfile
 st.set_page_config(layout="wide")
 # Reading the data
-df_triplets = pd.read_csv("triplets_file.csv")
-df_songs = pd.read_csv("song_data.csv")
+# Specify the path to your zipped CSV file
+zip_file_path = 'datasets.zip'
+# Specify the name of the CSV file within the zip archive
+triplets = 'triplets_file.csv'
+songs = 'song_data.csv'
+# Open the zip file and read the CSV using pandas
+with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
+    with zip_file.open(triplets) as triplets:
+        df_triplets = pd.read_csv(triplets)
+    with zip_file.open(songs) as songs:
+        df_songs = pd.read_csv(songs)
 
 # Opening user_matrix
 with open('user_matrix.pkl', 'rb') as file:
